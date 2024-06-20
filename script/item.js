@@ -1,3 +1,4 @@
+import { deleteNoteWithConfirmation } from "./app.js";
 class NoteItem extends HTMLElement {
   constructor() {
     super();

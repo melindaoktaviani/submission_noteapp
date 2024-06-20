@@ -1,23 +1,24 @@
 const path = require("path");
+const HtmlWebpackPlugin = require("html-webpack-plugin");
 
 module.exports = {
-  entry: "./script/index.js", // Update entry point to the correct file
+  entry: "./script/app.js",
   output: {
     filename: "bundle.js",
-    path: path.resolve(__dirname, "dist"),
+    path: path.resolve(__dirname, "script"),
   },
   devServer: {
     static: {
-      directory: path.join(__dirname, "dist"),
+      directory: path.join(__dirname, "script"),
     },
     compress: true,
-    port: 9000,
+    port: 9001,
   },
   module: {
     rules: [
       {
         test: /\.css$/i,
-        use: ["style-loader", "css-loader"], // Use style-loader and css-loader
+        use: ["style-loader", "css-loader"],
       },
       {
         test: /\.js$/,
@@ -31,5 +32,14 @@ module.exports = {
       },
     ],
   },
+  plugins: [
+    new HtmlWebpackPlugin({
+      template: path.resolve(__dirname, "./script/templates/index.html"),
+      filename: "index.html",
+    }),
+  ],
   mode: "development",
+  stats: {
+    children: true,
+  },
 };

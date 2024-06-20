@@ -23,7 +23,7 @@ class NoteHeader extends HTMLElement {
         </style>
         <header>
           <div class="img">
-            <img src="notes.jpg" alt="logo-note" />
+            <img src="./asset/notes.jpg" alt="logo-note" />
             <h1>NoteApp</h1>
           </div>
         </header>

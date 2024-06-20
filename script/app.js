@@ -1,3 +1,7 @@
+import "./css/styles.css";
+import "./footer.js";
+import "./header.js";
+
 const API_URL = "https://notes-api.dicoding.dev/v2";
 const API_TOKEN = "your_api_token_here"; // Replace with your actual token
 
@@ -47,7 +51,7 @@ async function addNote() {
   }
 }
 
-async function deleteNoteWithConfirmation(id) {
+export async function deleteNoteWithConfirmation(id) {
   if (confirm("Are you sure you want to delete this note?")) {
     try {
       showLoadingIndicator(); // Show loading indicator
@@ -79,13 +83,23 @@ function renderNotes(notes) {
       <div class="note">
         <h3>${note.title}</h3>
         <p>${note.body}</p>
-        <button onclick="editNote('${note.id}')">Edit</button>
-        <button onclick="deleteNoteWithConfirmation('${note.id}')">Delete</button>
+        <button data-note-id="${note.id}" class="edit-button">Edit</button>
+        <button data-note-id="${note.id}" class="delete-button">Delete</button>
       </div>
     `;
     notesList.appendChild(noteItem);
   });
 }
+
+document.addEventListener("click", function (event) {
+  if (event.target.classList.contains("delete-button")) {
+    const noteId = event.target.getAttribute("data-note-id");
+    deleteNoteWithConfirmation(noteId);
+  } else if (event.target.classList.contains("edit-button")) {
+    const noteId = event.target.getAttribute("data-note-id");
+    editNote(noteId);
+  }
+});
 
 function showLoadingIndicator() {
   document.getElementById("loading-indicator").style.display = "block";
@@ -120,11 +134,10 @@ async function updateNote() {
   const id = document.getElementById("note-id").value;
   const title = document.getElementById("note-title").value;
   const body = document.getElementById("note-body").value;
-
   try {
-    showLoadingIndicator(); // Show loading indicator
+    showLoadingIndicator();
     const response = await fetch(`${API_URL}/notes/${id}`, {
-      method: "PUT",
+      method: "POST",
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${API_TOKEN}`,
